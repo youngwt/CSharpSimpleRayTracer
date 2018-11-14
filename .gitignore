@@ -1,2 +1,8 @@
 
 bin/
+
+CSharpSimpleRayTracer/obj/
+
+Tests/obj/
+
+\.vs/
