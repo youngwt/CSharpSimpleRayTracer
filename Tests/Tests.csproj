@@ -16,4 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CSharpSimpleRayTracer\CSharpSimpleRayTracer.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
 </Project>
