@@ -12,7 +12,7 @@ namespace Tests
     public class RayTracerTests
     {
         [Test]
-        public void Test_project_is_using_nUnit_correctl()
+        public void Test_project_is_using_nUnit_correctly()
         {
             Assert.True(true);
         }
