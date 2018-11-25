@@ -87,5 +87,106 @@ namespace Tests.ModelFixtures
             // Assert
             Assert.That(result, Is.EqualTo(expected));
         }
+
+        [Test]
+        public void Can_Add_two_vectors()
+        {
+            // Arrange
+            var v1 = new Vertex(1, 2, 3);
+            var v2 = new Vertex(4, 5, 6);
+
+            // Act
+            v1.Add(v2);
+
+            // Assert
+            Assert.That(v1.X, Is.EqualTo(5));
+            Assert.That(v1.Y, Is.EqualTo(7));
+            Assert.That(v1.Z, Is.EqualTo(9));
+        }
+
+        [Test]
+        public void Can_Subtract_two_vectors()
+        {
+            // Arrange
+            var v1 = new Vertex(1, 2, 3);
+            var v2 = new Vertex(4, 5, 6);
+
+            // Act
+            v1.Subtract(v2);
+
+            // Assert
+            Assert.That(v1.X, Is.EqualTo(-3), "X is wrong");
+            Assert.That(v1.Y, Is.EqualTo(-3), "Y is wrong");
+            Assert.That(v1.Z, Is.EqualTo(-3), "Z is wrong");
+        }
+
+        [Test]
+        public void Can_multiply_two_vectors()
+        {
+            // Arrange
+            var v1 = new Vertex(1, 2, 3);
+            var v2 = new Vertex(4, 5, 6);
+
+            // Act
+            v1.Multiply(v2);
+
+            // Assert
+            Assert.That(v1.X, Is.EqualTo(4), "X is wrong");
+            Assert.That(v1.Y, Is.EqualTo(10), "Y is wrong");
+            Assert.That(v1.Z, Is.EqualTo(18), "Z is wrong");
+        }
+
+        [TestCase(0, 1, 1)]
+        [TestCase(1, 0, 1)]
+        [TestCase(1, 1, 0)]
+        public void Will_not_divide_by_zero(
+            double x,
+            double y,
+            double z)
+        {
+            // Arrange
+            var v1 = new Vertex(1, 2, 3);
+            var v2 = new Vertex(x, y, z);
+
+            // Act and Assert
+            Assert.Throws<ArgumentException>(() => v1.Divide(v2));
+        }
+
+        [Test]
+        public void Can_divide_vector()
+        {
+            // Arrange
+            var v1 = new Vertex(10, 8, 6);
+            var v2 = new Vertex(2, 2, 2);
+
+            // Act
+            v1.Divide(v2);
+
+            // Assert
+            Assert.That(v1.X, Is.EqualTo(5));
+            Assert.That(v1.Y, Is.EqualTo(4));
+            Assert.That(v1.Z, Is.EqualTo(3));
+        }
+
+        [TestCase(2, 2, 4, 6)]
+        [TestCase(-1, -1, -2, -3)]
+        [TestCase(0, 0, 0, 0)]
+        public void Can_scale_vector(double scale_factor, 
+                                double expectedX, 
+                                double expectedY, 
+                                double expectedZ)
+        {
+            // Arrange
+            var v1 = new Vertex(1, 2, 3);
+
+            // Act
+            v1.Scale(scale_factor);
+
+            // Assert
+            Assert.That(v1.X, Is.EqualTo(expectedX));
+            Assert.That(v1.Y, Is.EqualTo(expectedY));
+            Assert.That(v1.Z, Is.EqualTo(expectedZ));
+        }
+
     }
 }

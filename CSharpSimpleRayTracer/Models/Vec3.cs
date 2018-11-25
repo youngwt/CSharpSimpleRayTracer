@@ -77,5 +77,61 @@ namespace CSharpSimpleRayTracer.Models
         {
             return (X * other.X) + (Y * other.Y) + (Z * other.Z);
         }
+
+        /// <summary>
+        /// Adds a vector to the current vector
+        /// </summary>
+        /// <param name="other">The additional vector</param>
+        public void Add(Vec3 other)
+        {
+            X += other.X;
+            Y += other.Y;
+            Z += other.Z;
+        }
+
+        /// <summary>
+        /// Subtracts the other vector from the current one
+        /// </summary>
+        /// <param name="other">The vector to subtract</param>
+        public void Subtract(Vec3 other)
+        {
+            X -= other.X;
+            Y -= other.Y;
+            Z -= other.Z;
+        }
+
+        /// <summary>
+        /// Multiplies the current vector by the other one
+        /// </summary>
+        /// <param name="other">The other vector</param>
+        public void Multiply(Vec3 other)
+        {
+            X *= other.X;
+            Y *= other.Y;
+            Z *= other.Z;
+        }
+
+        /// <summary>
+        /// Multiplies the current vector by the other one
+        /// </summary>
+        /// <param name="other">The other vector</param>
+        public void Divide(Vec3 other)
+        {
+            if(other.X == 0 || other.Y == 0 | other.Z == 0)
+            {
+                throw new ArgumentException("Cannot divide by 0");
+            }
+
+            X /= other.X;
+            Y /= other.Y;
+            Z /= other.Z;
+        }
+
+        public void Scale(double scale_factor)
+        {
+            X *= scale_factor;
+            Y *= scale_factor;
+            Z *= scale_factor;
+        }
     }
 }

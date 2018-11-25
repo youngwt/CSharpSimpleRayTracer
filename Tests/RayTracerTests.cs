@@ -1,10 +1,10 @@
 using System;
-using CSharpSimpleRayTracer;
-using NUnit.Framework;
 using System.IO;
-using System.Reflection;
-using ImageMagick;
 using System.Text;
+using CSharpSimpleRayTracer;
+using CSharpSimpleRayTracer.Models;
+using ImageMagick;
+using NUnit.Framework;
 
 namespace Tests
 {
@@ -42,14 +42,16 @@ namespace Tests
             {
                 for (var i = 0; i < nx; i++)
                 {
-                    var r = (float)i / (float)nx;
-                    var g = (float)j / (float)ny;
-                    var b = 51;
 
-                    var ir = Math.Round(255.99 * r);
-                    var ig = Math.Round(255.99 * g);
+                    var col = new Vertex(
+                        (float)i / (float)nx,
+                        (float)j / (float)ny,
+                        51);
 
-                    ppmBuilder.AppendLine($"{ir} {ig} {b}");
+                    var ir = Math.Round(255.99 * col.X);
+                    var ig = Math.Round(255.99 * col.Y);
+
+                    ppmBuilder.AppendLine($"{ir} {ig} {col.Z}");
                 }
             }
 
