@@ -1,12 +1,48 @@
 ﻿using System;
 namespace CSharpSimpleRayTracer.Models
 {
-    public abstract class Vec3
+    public class Vec3 
     {
-
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
+
+        // Colours
+        public double R
+        {
+            get
+            {
+                return X;
+            }
+            set
+            {
+                X = value;
+            }
+        }
+
+        public double G
+        {
+            get
+            {
+                return Y;
+            }
+            set
+            {
+                Y = value;
+            }
+        }
+
+        public double B
+        {
+            get
+            {
+                return Z;
+            }
+            set
+            {
+                Z = value;
+            }
+        }
 
         public Vec3()
         {
@@ -59,9 +95,9 @@ namespace CSharpSimpleRayTracer.Models
         /// Gets the cross produce of 2 vectors
         /// </summary>
         /// <param name="other">Other.</param>
-        public Vertex Cross(Vec3 other)
+        public Vec3 Cross(Vec3 other)
         {
-            return new Vertex(
+            return new Vec3(
                 Y * other.Z - Z * other.Y,
                 Z * other.X - X * other.X,
                 X * other.Y - (Y * other.X)
@@ -82,56 +118,66 @@ namespace CSharpSimpleRayTracer.Models
         /// Adds a vector to the current vector
         /// </summary>
         /// <param name="other">The additional vector</param>
-        public void Add(Vec3 other)
+        public Vec3 Add(Vec3 other)
         {
-            X += other.X;
-            Y += other.Y;
-            Z += other.Z;
+            var x = X + other.X;
+            var y = Y + other.Y;
+            var z = Z + other.Z;
+
+            return new Vec3(x, y, z);
         }
 
         /// <summary>
         /// Subtracts the other vector from the current one
         /// </summary>
         /// <param name="other">The vector to subtract</param>
-        public void Subtract(Vec3 other)
+        public Vec3 Subtract(Vec3 other)
         {
-            X -= other.X;
-            Y -= other.Y;
-            Z -= other.Z;
+            var x = X - other.X;
+            var y = Y - other.Y;
+            var z = Z - other.Z;
+
+            return new Vec3(x, y, z);
         }
 
         /// <summary>
         /// Multiplies the current vector by the other one
         /// </summary>
         /// <param name="other">The other vector</param>
-        public void Multiply(Vec3 other)
+        public Vec3 Multiply(Vec3 other)
         {
-            X *= other.X;
-            Y *= other.Y;
-            Z *= other.Z;
+            var x = X * other.X;
+            var y = Y * other.Y;
+            var z = Z * other.Z;
+
+            return new Vec3(x, y, z);
         }
 
         /// <summary>
         /// Multiplies the current vector by the other one
         /// </summary>
         /// <param name="other">The other vector</param>
-        public void Divide(Vec3 other)
+        public Vec3 Divide(Vec3 other)
         {
             if(other.X == 0 || other.Y == 0 | other.Z == 0)
             {
                 throw new ArgumentException("Cannot divide by 0");
             }
 
-            X /= other.X;
-            Y /= other.Y;
-            Z /= other.Z;
+            var x = X / other.X;
+            var y = Y / other.Y;
+            var z = Z /= other.Z;
+
+            return new Vec3(x, y, z);
         }
 
-        public void Scale(double scale_factor)
+        public Vec3 Scale(double scale_factor)
         {
-            X *= scale_factor;
-            Y *= scale_factor;
-            Z *= scale_factor;
+            var x = X * scale_factor;
+            var y = Y * scale_factor;
+            var z = Z * scale_factor;
+
+            return new Vec3(x, y, z);
         }
     }
 }

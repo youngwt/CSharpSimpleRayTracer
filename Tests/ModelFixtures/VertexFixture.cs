@@ -12,7 +12,7 @@ namespace Tests.ModelFixtures
         {
             // Arrange
 
-            var vertex = new Vertex(3, 4, 5);
+            var vertex = new Vec3(3, 4, 5);
             
             // Act
             var length = vertex.LengthSquared();
@@ -36,8 +36,8 @@ namespace Tests.ModelFixtures
             double ez)
         {
             // Arrange
-            var vertex1 = new Vertex(x1, y1, z1);
-            var vertex2 = new Vertex(x2, y2, z2);
+            var vertex1 = new Vec3(x1, y1, z1);
+            var vertex2 = new Vec3(x2, y2, z2);
 
             // Act
             var result = vertex1.Cross(vertex2);
@@ -54,7 +54,7 @@ namespace Tests.ModelFixtures
         {
             // Arrange
 
-            var vertex = new Vertex(3, 4, 5);
+            var vertex = new Vec3(3, 4, 5);
 
             // Act
             vertex.Normalise();
@@ -78,8 +78,8 @@ namespace Tests.ModelFixtures
             double expected)
         {
             // Arrange
-            var vec1 = new Vertex(x1, y1, z1);
-            var vec2 = new Vertex(x2, y2, z2);
+            var vec1 = new Vec3(x1, y1, z1);
+            var vec2 = new Vec3(x2, y2, z2);
 
             // Act
             var result = vec1.Dot(vec2);
@@ -92,48 +92,48 @@ namespace Tests.ModelFixtures
         public void Can_Add_two_vectors()
         {
             // Arrange
-            var v1 = new Vertex(1, 2, 3);
-            var v2 = new Vertex(4, 5, 6);
+            var v1 = new Vec3(1, 2, 3);
+            var v2 = new Vec3(4, 5, 6);
 
             // Act
-            v1.Add(v2);
+            var result = v1.Add(v2);
 
             // Assert
-            Assert.That(v1.X, Is.EqualTo(5));
-            Assert.That(v1.Y, Is.EqualTo(7));
-            Assert.That(v1.Z, Is.EqualTo(9));
+            Assert.That(result.X, Is.EqualTo(5));
+            Assert.That(result.Y, Is.EqualTo(7));
+            Assert.That(result.Z, Is.EqualTo(9));
         }
 
         [Test]
         public void Can_Subtract_two_vectors()
         {
             // Arrange
-            var v1 = new Vertex(1, 2, 3);
-            var v2 = new Vertex(4, 5, 6);
+            var v1 = new Vec3(1, 2, 3);
+            var v2 = new Vec3(4, 5, 6);
 
             // Act
-            v1.Subtract(v2);
+            var result = v1.Subtract(v2);
 
             // Assert
-            Assert.That(v1.X, Is.EqualTo(-3), "X is wrong");
-            Assert.That(v1.Y, Is.EqualTo(-3), "Y is wrong");
-            Assert.That(v1.Z, Is.EqualTo(-3), "Z is wrong");
+            Assert.That(result.X, Is.EqualTo(-3), "X is wrong");
+            Assert.That(result.Y, Is.EqualTo(-3), "Y is wrong");
+            Assert.That(result.Z, Is.EqualTo(-3), "Z is wrong");
         }
 
         [Test]
         public void Can_multiply_two_vectors()
         {
             // Arrange
-            var v1 = new Vertex(1, 2, 3);
-            var v2 = new Vertex(4, 5, 6);
+            var v1 = new Vec3(1, 2, 3);
+            var v2 = new Vec3(4, 5, 6);
 
             // Act
-            v1.Multiply(v2);
+            var result = v1.Multiply(v2);
 
             // Assert
-            Assert.That(v1.X, Is.EqualTo(4), "X is wrong");
-            Assert.That(v1.Y, Is.EqualTo(10), "Y is wrong");
-            Assert.That(v1.Z, Is.EqualTo(18), "Z is wrong");
+            Assert.That(result.X, Is.EqualTo(4), "X is wrong");
+            Assert.That(result.Y, Is.EqualTo(10), "Y is wrong");
+            Assert.That(result.Z, Is.EqualTo(18), "Z is wrong");
         }
 
         [TestCase(0, 1, 1)]
@@ -145,8 +145,8 @@ namespace Tests.ModelFixtures
             double z)
         {
             // Arrange
-            var v1 = new Vertex(1, 2, 3);
-            var v2 = new Vertex(x, y, z);
+            var v1 = new Vec3(1, 2, 3);
+            var v2 = new Vec3(x, y, z);
 
             // Act and Assert
             Assert.Throws<ArgumentException>(() => v1.Divide(v2));
@@ -156,16 +156,16 @@ namespace Tests.ModelFixtures
         public void Can_divide_vector()
         {
             // Arrange
-            var v1 = new Vertex(10, 8, 6);
-            var v2 = new Vertex(2, 2, 2);
+            var v1 = new Vec3(10, 8, 6);
+            var v2 = new Vec3(2, 2, 2);
 
             // Act
-            v1.Divide(v2);
+            var result = v1.Divide(v2);
 
             // Assert
-            Assert.That(v1.X, Is.EqualTo(5));
-            Assert.That(v1.Y, Is.EqualTo(4));
-            Assert.That(v1.Z, Is.EqualTo(3));
+            Assert.That(result.X, Is.EqualTo(5));
+            Assert.That(result.Y, Is.EqualTo(4));
+            Assert.That(result.Z, Is.EqualTo(3));
         }
 
         [TestCase(2, 2, 4, 6)]
@@ -177,15 +177,15 @@ namespace Tests.ModelFixtures
                                 double expectedZ)
         {
             // Arrange
-            var v1 = new Vertex(1, 2, 3);
+            var v1 = new Vec3(1, 2, 3);
 
             // Act
-            v1.Scale(scale_factor);
+            var result = v1.Scale(scale_factor);
 
             // Assert
-            Assert.That(v1.X, Is.EqualTo(expectedX));
-            Assert.That(v1.Y, Is.EqualTo(expectedY));
-            Assert.That(v1.Z, Is.EqualTo(expectedZ));
+            Assert.That(result.X, Is.EqualTo(expectedX));
+            Assert.That(result.Y, Is.EqualTo(expectedY));
+            Assert.That(result.Z, Is.EqualTo(expectedZ));
         }
 
     }

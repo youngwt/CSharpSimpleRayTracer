@@ -11,4 +11,7 @@
   <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Models\Color.cs" />
+  </ItemGroup>
 </Project>
