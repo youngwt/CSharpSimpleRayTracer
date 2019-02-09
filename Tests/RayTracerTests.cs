@@ -53,27 +53,12 @@ namespace Tests
                 }
             }
 
-            // get the image we expect to compare in the assert
-            var dir = TestContext.CurrentContext.TestDirectory;
-            MagickImage expectedImage;
-            using (var expectedOutput = new FileStream($"{dir}../../../../Resources/can_save_ppm_as_png_expected_output.png", FileMode.Open))
-            {
-                expectedImage = new MagickImage(expectedOutput);
-            }
-
             // Act
             var filename = "test_ppm_as_png.png";
             rayTracer.SaveImageFromPPM(filename);
 
             // Assert
-            // load the resulting image as a magickImage object
-            MagickImage resultingImage;
-            using (var resultAsStream = new FileStream($"{TestContext.CurrentContext.WorkDirectory}/{filename}", FileMode.Open))
-            {
-                resultingImage = new MagickImage(resultAsStream);
-            }
-
-            Assert.That(resultingImage.Compare(expectedImage, ErrorMetric.Absolute), Is.EqualTo(0d));
+            Assert.That(VerifyImage("can_save_ppm_as_png_expected_output.png", filename), Is.True);
         }
 
         [Test]
@@ -110,9 +95,11 @@ namespace Tests
                 }
             }
 
-            rayTracer.SaveImageFromPPM("Can_Draw_Background.png");
+            var fileName = "Can_Draw_Background.png";
+            rayTracer.SaveImageFromPPM(fileName);
 
             // Assert
+            Assert.That(VerifyImage(fileName, fileName), Is.True);
         }
 
         private Vec3 ColourByRay(Ray r)
@@ -121,6 +108,31 @@ namespace Tests
             var t = 0.5 * r.Direction().Y + 1;
 
             return new Vec3(1, 1, 1).Scale(1 - t).Add(new Vec3(0.5, 0.7, 1.0).Scale(t));
+        }
+
+        /// <summary>
+        /// Compares 2 images and returns true if they are the same
+        /// </summary>
+        /// <returns><c>true</c>, if image was verifyed, <c>false</c> otherwise.</returns>
+        /// <param name="expectedFileName">Expected file name.</param>
+        /// <param name="resultFileName">Result file name.</param>
+        private bool VerifyImage(string expectedFileName, string resultFileName)
+        {
+            var dir = TestContext.CurrentContext.TestDirectory;
+            MagickImage expectedImage;
+            using (var expectedOutput = new FileStream($"{dir}../../../../Resources/{expectedFileName}", FileMode.Open))
+            {
+                expectedImage = new MagickImage(expectedOutput);
+            }
+
+
+            MagickImage resultingImage;
+            using (var resultAsStream = new FileStream($"{TestContext.CurrentContext.WorkDirectory}/{resultFileName}", FileMode.Open))
+            {
+                resultingImage = new MagickImage(resultAsStream);
+            }
+
+            return Math.Abs(resultingImage.Compare(expectedImage, ErrorMetric.Absolute)) < 0.1;
         }
     }
 }
