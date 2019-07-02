@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using CSharpSimpleRayTracer;
 using CSharpSimpleRayTracer.Models;
@@ -11,6 +12,20 @@ namespace Tests
     [TestFixture]
     public class RayTracerTests
     {
+
+        [TearDown]
+        public void Teardown()
+        {
+            // remove all images created during the tests
+            string currentDirectory = TestContext.CurrentContext.TestDirectory; //Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var files = Directory.GetFiles(currentDirectory, "*.png", SearchOption.TopDirectoryOnly);
+
+            foreach(var file in files)
+            {
+                File.Delete(file);
+            }
+        }
+
         [Test]
         public void Test_project_is_using_nUnit_correctly()
         {
@@ -65,50 +80,18 @@ namespace Tests
         public void Can_Draw_Background()
         {
             // Arrange
-            var nx = 200;
-            var ny = 100;
-            var rayTracer = new RayTracer(nx, ny);
+            var rayTracer = new RayTracer(200, 100);
 
-            var lowerBound = new Vec3(-2, -1, -1);
-            var dx = new Vec3(4, 0, 0);
-            var dy = new Vec3(0, 2, 0);
-            var origin = new Vec3(0, 0, 0);
-
-            // Act
-
-            for (int j = ny - 1; j >= 0; j--)
-            {
-                for (int i = 0; i < nx; i++)
-                {
-                    var u = (double)i / (double)nx;
-                    var v = (double)j / (double)ny;
-
-                    var currentPoint = lowerBound.Add(dx.Scale(u).Add(dy.Scale(v)));
-                    var ray = new Ray(origin, currentPoint);
-
-                    var colour = ColourByRay(ray);
-                    var r = (int)(colour.X * 255);
-                    var g = (int)(colour.Y * 255);
-                    var b = (int)(colour.Z * 255);
-
-                    rayTracer.AddToImageBuffer($"{r} {g} {b}");
-                }
-            }
+            rayTracer.DrawBackground();
 
             var fileName = "Can_Draw_Background.png";
-            rayTracer.SaveImageFromPPM(fileName);
+            rayTracer.SaveFrameBufferToDisk(TestContext.CurrentContext.WorkDirectory+"/"+fileName);
 
             // Assert
             Assert.That(VerifyImage(fileName, fileName), Is.True);
         }
 
-        private Vec3 ColourByRay(Ray r)
-        {
-            r.Direction().Normalise();
-            var t = 0.5 * r.Direction().Y + 1;
 
-            return new Vec3(1, 1, 1).Scale(1 - t).Add(new Vec3(0.5, 0.7, 1.0).Scale(t));
-        }
 
         /// <summary>
         /// Compares 2 images and returns true if they are the same
