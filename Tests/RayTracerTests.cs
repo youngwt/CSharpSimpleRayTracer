@@ -64,7 +64,9 @@ namespace Tests
                     var ir = Math.Round(255.99 * col.X);
                     var ig = Math.Round(255.99 * col.Y);
 
+                    #pragma warning disable CS0618 // Type or member is obsolete
                     rayTracer.AddToImageBuffer($"{ir} {ig} {col.Z}");
+                    #pragma warning restore CS0618 // Type or member is obsolete
                 }
             }
 

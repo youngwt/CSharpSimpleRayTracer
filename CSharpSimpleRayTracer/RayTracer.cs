@@ -22,6 +22,9 @@ namespace CSharpSimpleRayTracer
         /// </summary>
         private int Height { get; }
 
+        /// <summary>
+        /// A bitmap frame buffer
+        /// </summary>
         private Bitmap FrameBuffer { get; }
 
         /// <summary>
@@ -57,6 +60,7 @@ namespace CSharpSimpleRayTracer
         /// Adds a string representation of a pixel to the frame buffer
         /// </summary>
         /// <param name="pixel"></param>
+        [Obsolete("For the time being I will try saving to a frame buffer")]
         public void AddToImageBuffer(string pixel)
         {
             _imageBufferAsPPMString.AppendLine(pixel);
@@ -103,8 +107,6 @@ namespace CSharpSimpleRayTracer
             var dy = new Vec3(0, 2, 0);
             var origin = new Vec3(0, 0, 0);
 
-            // Act
-
             for (int j = Height - 1; j >= 0; j--)
             {
                 for (int i = 0; i < Width; i++)
@@ -116,15 +118,8 @@ namespace CSharpSimpleRayTracer
                     var ray = new Ray(origin, currentPoint);
 
                     var colour = ColourSkyByRay(ray);
-                    var r = (int)(colour.X * 255);
-                    var g = (int)(colour.Y * 255);
-                    var b = (int)(colour.Z * 255);
-
-                    this.AddToImageBuffer($"{r} {g} {b}");
-
-                    var colour2 = Color.FromArgb(255, r, g, b);
-
-                    FrameBuffer.SetPixel(Width-i-1, Height-j-1, colour2);
+                    
+                    FrameBuffer.SetPixel(Width-i-1, Height-j-1, colour);
                 }
             }            
         }
@@ -132,14 +127,20 @@ namespace CSharpSimpleRayTracer
         /// <summary>
         /// paints a sky like blue gradient based on the ray's angle
         /// </summary>
-        /// <param name="r"></param>
+        /// <param name="ray">The incoming ray</param>
         /// <returns>A colour value</returns>
-        private Vec3 ColourSkyByRay(Ray r)
+        private Color ColourSkyByRay(Ray ray)
         {
-            r.Direction().Normalise();
-            var t = 0.5 * r.Direction().Y + 1;
+            ray.Direction().Normalise();
+            var t = 0.5 * ray.Direction().Y + 1;
 
-            return new Vec3(1, 1, 1).Scale(1 - t).Add(new Vec3(0.5, 0.7, 1.0).Scale(t));
+            var sky = new  Vec3(1, 1, 1).Scale(1 - t).Add(new Vec3(0.5, 0.7, 1.0).Scale(t));
+
+            var r = (int)(sky.X * 255);
+            var g = (int)(sky.Y * 255);
+            var b = (int)(sky.Z * 255);
+
+            return Color.FromArgb(255, r, g, b);
         }
     }
 }
