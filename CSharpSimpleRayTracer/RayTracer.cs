@@ -114,14 +114,22 @@ namespace CSharpSimpleRayTracer
                     var u = (double)i / (double) Width;
                     var v = (double)j / (double) Height;
 
-                    var currentPoint = lowerBound.Add(dx.Scale(u).Add(dy.Scale(v)));
-                    var ray = new Ray(origin, currentPoint);
+                    var currentPointX = Vec3.Add(lowerBound, dx.Scale(u));
+                    var currentPointY = Vec3.Add(currentPointX, dy.Scale(v));//lowerBound.Add(dx.Scale(u).Add(dy.Scale(v)));
+                    var ray = new Ray(origin, currentPointY);
 
                     var colour = ColourSkyByRay(ray);
                     
                     FrameBuffer.SetPixel(Width-i-1, Height-j-1, colour);
                 }
             }            
+        }
+
+        public bool isHitSphere(Vec3 centre, float radius, Ray ray)
+        {
+            var oc = Vec3.Subtract(ray.Origin(), centre);
+
+            return false;
         }
 
         /// <summary>
@@ -134,7 +142,9 @@ namespace CSharpSimpleRayTracer
             ray.Direction().Normalise();
             var t = 0.5 * ray.Direction().Y + 1;
 
-            var sky = new  Vec3(1, 1, 1).Scale(1 - t).Add(new Vec3(0.5, 0.7, 1.0).Scale(t));
+            var scaledRay = new Vec3(1, 1, 1).Scale(1 - t);
+
+            var sky = Vec3.Add(scaledRay, new Vec3(0.5, 0.7, 1.0).Scale(t));
 
             var r = (int)(sky.X * 255);
             var g = (int)(sky.Y * 255);

@@ -24,7 +24,7 @@ namespace CSharpSimpleRayTracer.Models
 
         public Vec3 PointAtParameter(double t)
         {
-            return A.Add(B.Scale(t));
+            return    Vec3.Add(A, B.Scale(t));
         }
 
     }

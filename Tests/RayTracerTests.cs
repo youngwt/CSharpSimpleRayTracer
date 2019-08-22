@@ -93,7 +93,18 @@ namespace Tests
             Assert.That(VerifyImage(fileName, fileName), Is.True);
         }
 
+        [Test]
+        public void can_detect_sphere()
+        {
+            // Arrange
 
+            // Act
+
+            //var result = RayTracer.isHitSphere();
+
+            // Assert
+            //Assert.That(result, Is.True);
+        }
 
         /// <summary>
         /// Compares 2 images and returns true if they are the same

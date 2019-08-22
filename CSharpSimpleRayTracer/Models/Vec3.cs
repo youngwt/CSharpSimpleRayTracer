@@ -92,50 +92,49 @@ namespace CSharpSimpleRayTracer.Models
         }
 
         /// <summary>
-        /// Gets the cross produce of 2 vectors
+        /// Returns the dot product of the 2 vectors
         /// </summary>
-        /// <param name="other">Other.</param>
-        public Vec3 Cross(Vec3 other)
+        /// <param name="a">The first vector</param>
+        /// <param name="b">The second vector</param>
+        /// <returns>The dot product of 2 vectors</returns>
+        public static double Dot(Vec3 a, Vec3 b)
         {
-            return new Vec3(
-                Y * other.Z - Z * other.Y,
-                Z * other.X - X * other.X,
-                X * other.Y - (Y * other.X)
-            );
+            return (a.X * b.X) + (a.Y * b.Y) + (a.Z * b.Z);
         }
 
         /// <summary>
-        /// Returns the dot product
+        /// Adds 2 vectors and returns the result
         /// </summary>
-        /// <returns>The dot product</returns>
-        /// <param name="other">Other.</param>
-        public double Dot(Vec3 other)
+        public static Vec3 Add(Vec3 a, Vec3 b)
         {
-            return (X * other.X) + (Y * other.Y) + (Z * other.Z);
-        }
-
-        /// <summary>
-        /// Adds a vector to the current vector
-        /// </summary>
-        /// <param name="other">The additional vector</param>
-        public Vec3 Add(Vec3 other)
-        {
-            var x = X + other.X;
-            var y = Y + other.Y;
-            var z = Z + other.Z;
+            var x = a.X + b.X;
+            var y = a.Y + b.Y;
+            var z = a.Z + b.Z;
 
             return new Vec3(x, y, z);
+        }
+
+        /// <summary>
+        /// Gets the cross produce of 2 vectors
+        /// </summary>
+        public static Vec3 Cross(Vec3 a, Vec3 b)
+        {
+            return new Vec3(
+                a.Y * b.Z - a.Z * b.Y,
+                a.Z * b.X - a.X * b.X,
+                a.X * b.Y - (a.Y * b.X)
+            );
         }
 
         /// <summary>
         /// Subtracts the other vector from the current one
         /// </summary>
         /// <param name="other">The vector to subtract</param>
-        public Vec3 Subtract(Vec3 other)
+        public static Vec3 Subtract(Vec3 a, Vec3 b)
         {
-            var x = X - other.X;
-            var y = Y - other.Y;
-            var z = Z - other.Z;
+            var x = a.X - b.X;
+            var y = a.Y - b.Y;
+            var z = a.Z - b.Z;
 
             return new Vec3(x, y, z);
         }
@@ -143,12 +142,12 @@ namespace CSharpSimpleRayTracer.Models
         /// <summary>
         /// Multiplies the current vector by the other one
         /// </summary>
-        /// <param name="other">The other vector</param>
-        public Vec3 Multiply(Vec3 other)
+        /// <param name="b">The other vector</param>
+        public static Vec3 Multiply(Vec3 a, Vec3 b)
         {
-            var x = X * other.X;
-            var y = Y * other.Y;
-            var z = Z * other.Z;
+            var x = a.X * b.X;
+            var y = a.Y * b.Y;
+            var z = a.Z * b.Z;
 
             return new Vec3(x, y, z);
         }
@@ -156,17 +155,17 @@ namespace CSharpSimpleRayTracer.Models
         /// <summary>
         /// Multiplies the current vector by the other one
         /// </summary>
-        /// <param name="other">The other vector</param>
-        public Vec3 Divide(Vec3 other)
+        /// <param name="b">The other vector</param>
+        public static Vec3 Divide(Vec3 a, Vec3 b)
         {
-            if(other.X == 0 || other.Y == 0 | other.Z == 0)
+            if(b.X == 0 || b.Y == 0 | b.Z == 0)
             {
                 throw new ArgumentException("Cannot divide by 0");
             }
 
-            var x = X / other.X;
-            var y = Y / other.Y;
-            var z = Z /= other.Z;
+            var x = a.X / b.X;
+            var y = a.Y / b.Y;
+            var z = a.Z /= b.Z;
 
             return new Vec3(x, y, z);
         }

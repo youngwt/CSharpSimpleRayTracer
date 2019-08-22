@@ -40,7 +40,7 @@ namespace Tests.ModelFixtures
             var vertex2 = new Vec3(x2, y2, z2);
 
             // Act
-            var result = vertex1.Cross(vertex2);
+            var result = Vec3.Cross(vertex1, vertex2);
 
             // Assert
             Assert.That(result.X, Is.EqualTo(ex), "X component is wrong");
@@ -82,7 +82,7 @@ namespace Tests.ModelFixtures
             var vec2 = new Vec3(x2, y2, z2);
 
             // Act
-            var result = vec1.Dot(vec2);
+            var result = Vec3.Dot(vec1, vec2);
 
             // Assert
             Assert.That(result, Is.EqualTo(expected));
@@ -96,7 +96,7 @@ namespace Tests.ModelFixtures
             var v2 = new Vec3(4, 5, 6);
 
             // Act
-            var result = v1.Add(v2);
+            var result = Vec3.Add(v1, v2);
 
             // Assert
             Assert.That(result.X, Is.EqualTo(5));
@@ -112,7 +112,7 @@ namespace Tests.ModelFixtures
             var v2 = new Vec3(4, 5, 6);
 
             // Act
-            var result = v1.Subtract(v2);
+            var result = Vec3.Subtract(v1, v2);
 
             // Assert
             Assert.That(result.X, Is.EqualTo(-3), "X is wrong");
@@ -128,7 +128,7 @@ namespace Tests.ModelFixtures
             var v2 = new Vec3(4, 5, 6);
 
             // Act
-            var result = v1.Multiply(v2);
+            var result = Vec3.Multiply(v1, v2);
 
             // Assert
             Assert.That(result.X, Is.EqualTo(4), "X is wrong");
@@ -149,7 +149,7 @@ namespace Tests.ModelFixtures
             var v2 = new Vec3(x, y, z);
 
             // Act and Assert
-            Assert.Throws<ArgumentException>(() => v1.Divide(v2));
+            Assert.Throws<ArgumentException>(() => Vec3.Divide(v1, v2));
         }
 
         [Test]
@@ -160,7 +160,7 @@ namespace Tests.ModelFixtures
             var v2 = new Vec3(2, 2, 2);
 
             // Act
-            var result = v1.Divide(v2);
+            var result = Vec3.Divide(v1, v2);
 
             // Assert
             Assert.That(result.X, Is.EqualTo(5));
