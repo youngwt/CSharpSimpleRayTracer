@@ -93,27 +93,6 @@ namespace Tests
             Assert.That(VerifyImage(fileName, fileName), Is.True);
         }
 
-        [TestCase(2, 2, false)] // ray misses the sphere
-        [TestCase(0, 0, true)] // ray hits the sphere
-        public void can_detect_sphere(double u, double v, bool expectedResult)
-        {
-            // Arrange
-            var sphereLocation = new Vec3(0, 0, -5);
-            var origin = new Vec3(0, 0, 0);
-            var pointOfInterest = new Vec3(u, v, -5);
-
-            var ray = new Ray(origin, pointOfInterest);
-
-            var rayTracer = new RayTracer(100, 100);
-
-            // Act
-
-            var result = rayTracer.isHitSphere(sphereLocation, 1, ray);
-
-            // Assert
-            Assert.That(result, Is.EqualTo(expectedResult));
-        }
-
         /// <summary>
         /// Compares 2 images and returns true if they are the same
         /// </summary>
