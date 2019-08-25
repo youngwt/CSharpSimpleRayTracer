@@ -115,7 +115,7 @@ namespace CSharpSimpleRayTracer
                     var v = (double)j / (double) Height;
 
                     var currentPointX = Vec3.Add(lowerBound, dx.Scale(u));
-                    var currentPointY = Vec3.Add(currentPointX, dy.Scale(v));//lowerBound.Add(dx.Scale(u).Add(dy.Scale(v)));
+                    var currentPointY = Vec3.Add(currentPointX, dy.Scale(v));
                     var ray = new Ray(origin, currentPointY);
 
                     var colour = ColourSkyByRay(ray);
@@ -125,11 +125,23 @@ namespace CSharpSimpleRayTracer
             }            
         }
 
+        /// <summary>
+        /// Determines if a ray intersects a sphere
+        /// </summary>
+        /// <param name="centre">The sphere position in world space</param>
+        /// <param name="radius"> The radius of the sphere</param>
+        /// <param name="ray">The ray being tested</param>
+        /// <returns>True if ray intersects sphere</returns>
         public bool isHitSphere(Vec3 centre, float radius, Ray ray)
         {
             var oc = Vec3.Subtract(ray.Origin(), centre);
+            double a = Vec3.Dot(ray.Direction(), ray.Direction());
+            double b = 2.0d * Vec3.Dot(oc, ray.Direction());
+            double c = Vec3.Dot(oc, oc) - radius * radius;
 
-            return false;
+            double discriminant = b * b - (4 * a * c);
+
+            return discriminant > 0;
         }
 
         /// <summary>
