@@ -15,3 +15,21 @@ The first few commits are just about getting the project set up. Visual Studio f
 ## Chapter 2
 
 Now I have introduced some classes to do basic maths. I don't like the approach in Peter's book of having a generic Vec3 class for representing points, colours etc so I have put all the functionality in an abstract class with appropriate concrete implementations for type safety.
+
+## Chapter 3
+
+I spent a lot of time thinking about whether my approach to abstraction was appropriate or overkill. Because I wanted the each object to be more or less immutable every maths operation needed to return a new instance of its type. If all the basic vector maths was inside an abstract class I could not see a reasonable way for the abstract classes to return new objects of the correct type. In the end I decided to re-align myself with the code in the book and have a simple Vec3 class for all vector maths.
+
+In terms of pushing the project forward I was able to get the system to paint a plain sky like background by linearly interpolating between shades of blue:
+
+![bluesky image](Readme Resources/can_draw_background.png)
+
+
+## Chapter 4
+
+I did quite a lot of refactoring before getting into the objective for this chapter. I decided that since I was working in .NET I would use the features the framework has out of the box, namely the BitMap and Color classes. I have ditched support for PPM since I can address each pixel of a BitMap instance and it will output a png image on request. I also discovered Azure Devops to do some continuous integration but have so far been unsuccessful getting my project to compile on an Azure machine.
+
+The objective for this chapter was to draw our first shape in the ray tracer. My maths skills are not brilliant but on a conceptual level I understand how using the quadratic equation with the formula for a circle and seeing if a ray intersects by determining if it has a valid value for X, but I don't fully understand how each term in the quadratic equation maps to the circle formula. Nonetheless I implemented the function from the book and got the following:
+
+![redCircle image](Readme Resources/can_draw_sphere_on_background.png)
+
