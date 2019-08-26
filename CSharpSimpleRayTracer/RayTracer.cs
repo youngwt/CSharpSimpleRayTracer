@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -32,6 +33,11 @@ namespace CSharpSimpleRayTracer
         /// </summary>
         private StringBuilder _imageBufferAsPPMString;
 
+        /// <summary>
+        /// A
+        /// </summary>
+        public IList<I3dObject> SceneObjects { get; set; }
+
         public RayTracer(int x, int y)
         {
             _imageBufferAsPPMString = new StringBuilder();
@@ -46,6 +52,9 @@ namespace CSharpSimpleRayTracer
 
             // set the maximum value
             _imageBufferAsPPMString.AppendLine("255");
+
+            // initialise the scene with objects
+            SceneObjects = new List<I3dObject>();
 
             FrameBuffer = new Bitmap(x, y);
         }
@@ -75,7 +84,7 @@ namespace CSharpSimpleRayTracer
 
             MagickImage image;
 
-            using(var stream = new MemoryStream())
+            using (var stream = new MemoryStream())
             {
                 var writer = new StreamWriter(stream);
                 writer.Write(_imageBufferAsPPMString);
@@ -94,7 +103,7 @@ namespace CSharpSimpleRayTracer
         /// <param name="filename"></param>
         public void SaveFrameBufferToDisk(string path)
         {
-             FrameBuffer.Save(path, System.Drawing.Imaging.ImageFormat.Png);
+            FrameBuffer.Save(path, System.Drawing.Imaging.ImageFormat.Png);
         }
 
         /// <summary>
@@ -111,18 +120,30 @@ namespace CSharpSimpleRayTracer
             {
                 for (int i = 0; i < Width; i++)
                 {
-                    var u = (double)i / (double) Width;
-                    var v = (double)j / (double) Height;
+                    var u = (double)i / (double)Width;
+                    var v = (double)j / (double)Height;
 
                     var currentPointX = Vec3.Add(lowerBound, dx.Scale(u));
                     var currentPointY = Vec3.Add(currentPointX, dy.Scale(v));
                     var ray = new Ray(origin, currentPointY);
 
                     var colour = ColourSkyByRay(ray);
-                    
-                    FrameBuffer.SetPixel(Width-i-1, Height-j-1, colour);
+
+                    foreach (var obj in SceneObjects)
+                    {
+                        if (obj is Sphere)
+                        {
+                            var sphere = obj as Sphere;
+                            if (sphere.IsHit(ray))
+                            {
+                                colour = ColorFromVec3(sphere.Colour);
+                            }
+                        }
+                    }
+
+                    FrameBuffer.SetPixel(Width - i - 1, Height - j - 1, colour);
                 }
-            }            
+            }
         }
 
         /// <summary>
@@ -139,9 +160,14 @@ namespace CSharpSimpleRayTracer
 
             var sky = Vec3.Add(scaledRay, new Vec3(0.5, 0.7, 1.0).Scale(t));
 
-            var r = (int)(sky.X * 255);
-            var g = (int)(sky.Y * 255);
-            var b = (int)(sky.Z * 255);
+            return ColorFromVec3(sky);
+        }
+
+        private Color ColorFromVec3(Vec3 input)
+        {
+            var r = (int)(input.X * 255);
+            var g = (int)(input.Y * 255);
+            var b = (int)(input.Z * 255);
 
             return Color.FromArgb(255, r, g, b);
         }

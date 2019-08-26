@@ -4,7 +4,7 @@ namespace CSharpSimpleRayTracer.Models
     /// <summary>
     /// A class to represent a sphere
     /// </summary>
-    public class Sphere
+    public class Sphere : I3dObject
     {
         /// <summary>
         /// The location of the sphere
