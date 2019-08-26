@@ -1,5 +1,9 @@
 # CSharpSimpleRayTracer
 
+[![Build Status](https://dev.azure.com/youngwt/CSharpSimpleRaytracer/_apis/build/status/youngwt.CSharpSimpleRayTracer?branchName=master)](https://dev.azure.com/youngwt/CSharpSimpleRaytracer/_build/latest?definitionId=1&branchName=master)
+
+![redCircle image](readme_resources/Can_Draw_sphere_on_background.png)
+
 A Simple Ray tracer written in C# based on the book Ray Tracing in one Weekend by Peter Shirly. 
 
 I am writing this ray tracer for my own enjoyment, choosing to write it in C# as that's the language I use in my day job (and I want an excuse to use it on a mac at home). The goal for this project is to generate some nice looking pictures, I prefer simple code to optimised code and am not concerned with having a slow renderer.
@@ -22,7 +26,7 @@ I spent a lot of time thinking about whether my approach to abstraction was appr
 
 In terms of pushing the project forward I was able to get the system to paint a plain sky like background by linearly interpolating between shades of blue:
 
-![bluesky image](Readme Resources/can_draw_background.png)
+![bluesky image](readme_resources/Can_Draw_Background.png)
 
 
 ## Chapter 4
@@ -31,5 +35,5 @@ I did quite a lot of refactoring before getting into the objective for this chap
 
 The objective for this chapter was to draw our first shape in the ray tracer. My maths skills are not brilliant but on a conceptual level I understand how using the quadratic equation with the formula for a circle and seeing if a ray intersects by determining if it has a valid value for X, but I don't fully understand how each term in the quadratic equation maps to the circle formula. Nonetheless I implemented the function from the book and got the following:
 
-![redCircle image](Readme Resources/can_draw_sphere_on_background.png)
+![redCircle image](readme_resources/Can_Draw_sphere_on_background.png)
 
