@@ -134,9 +134,9 @@ namespace CSharpSimpleRayTracer
                         if (obj is Sphere)
                         {
                             var sphere = obj as Sphere;
-                            if (sphere.IsHit(ray))
+                            if (sphere.IsHit(ray) > 0)
                             {
-                                colour = ColorFromVec3(sphere.Colour);
+                                colour = ColorFromVec3(sphere.DrawPixel(ray));
                             }
                         }
                     }
