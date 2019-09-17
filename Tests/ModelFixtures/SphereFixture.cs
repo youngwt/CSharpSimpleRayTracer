@@ -7,9 +7,9 @@ namespace Tests.ModelFixtures
     [TestFixture]
     public class SphereFixture
     {
-        [TestCase(2, 2, false)] // ray misses the sphere
-        [TestCase(0, 0, true)] // ray hits the sphere
-        public void can_detect_sphere(double u, double v, bool expectedResult)
+        [TestCase(2, 2, -1)] // ray misses the sphere
+        [TestCase(0, 0, 0)] // ray hits the sphere
+        public void can_detect_sphere(double u, double v, double expectedResult)
         {
             // Arrange
             var sphereLocation = new Vec3(0, 0, -5);
@@ -27,7 +27,7 @@ namespace Tests.ModelFixtures
             var result = sphere.IsHit(ray);
 
             // Assert
-            Assert.That(result, Is.EqualTo(expectedResult));
+            Assert.That(result, Is.GreaterThanOrEqualTo(expectedResult));
         }
     }
 }
