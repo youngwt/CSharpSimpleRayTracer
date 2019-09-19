@@ -75,6 +75,28 @@ namespace Tests
             Assert.That(VerifyImage(fileName), Is.True);
         }
 
+        [Test]
+        [Ignore("There is a known issue with z sorting - see comments in chapter 5 section in readme.md")] 
+        public void Can_Draw_2_spheres_on_background()
+        {
+            // Arrange
+            var rayTracer = new RayTracer(200, 100);
+
+            var sphere = new Sphere(new Vec3(0, 0, -1), 0.5, new Vec3(1, 0, 0));
+            var sphere2 = new Sphere(new Vec3(0, -100.5, -1), 100, new Vec3(0, 1, 0));
+
+            rayTracer.SceneObjects.Add(sphere);
+            rayTracer.SceneObjects.Add(sphere2);
+
+            // Act
+            rayTracer.DrawBackground();
+            var fileName = $"{TestContext.CurrentContext.Test.MethodName}.png";
+            rayTracer.SaveFrameBufferToDisk(TestContext.CurrentContext.WorkDirectory + "/" + fileName);
+
+            // Assert
+            Assert.That(VerifyImage(fileName), Is.True);
+        }
+
         /// <summary>
         /// Compares 2 images and returns true if they are the same
         /// </summary>

@@ -37,3 +37,15 @@ The objective for this chapter was to draw our first shape in the ray tracer. My
 
 ![redCircle image](readme_resources/Can_Draw_sphere_on_background.png)
 
+## Chapter 5
+
+In this chapter I have started to shade the sphere. THe book suggests shading by using the normal. To get the normal I need the distance the ray travels until it hits a surface. Using the quadratic equation and solving for x gives us the distance the ray travels (t) until it hits the surface. We can then use the ray and the parameter t to get the surface point. The normal is simply the vector between the surface point and the centre of the sphere. I have used the normals in order to colour the sphere, but my result differs slightly against the book as my x axis is inverted:
+
+![normalCircle image](readme_resources/sphere_by_normals.png)
+
+I preempted the need to consider 3D scene objects as objects in the OOP sense so I had created a Sphere class with the properties and behaviours needed to render a sphere based on the work so far. Since lists are trivial in .NET and the book suggests making a list of hittable objects, I added an extra sphere to make a ground plain and gave it a render:
+
+
+![noZSorting image](readme_resources/no_z_sorting.png)
+
+I have obviously forgotten to take into account any kind of z-sorting!
