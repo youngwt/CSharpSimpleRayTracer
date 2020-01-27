@@ -37,9 +37,9 @@ namespace CSharpSimpleRayTracer.Models
         /// </summary>
         /// <param name="r"></param>
         /// <returns></returns>
-        public Vec3 DrawPixel(Ray r)
+        public Vec3 DrawPixel(Ray r, double max_t)
         {
-            var N = Normal(r);
+            var N = Normal(r, max_t);
 
             var colour = new Vec3(N.X + 1, N.Y + 1, N.Z + 1).Scale(0.5);
 
@@ -51,9 +51,9 @@ namespace CSharpSimpleRayTracer.Models
         /// </summary>
         /// <param name="op">The line between the centre and the point on the surface</param>
         /// <returns>The normal of the point</returns>
-        public Vec3 Normal(Ray op)
+        public Vec3 Normal(Ray op, double max_t)
         {
-            var t = IsHit(op);
+            var t = RayToPointParameter(op, max_t);
 
             var pointAtParameter = op.PointAtParameter(t);
 
@@ -78,7 +78,7 @@ namespace CSharpSimpleRayTracer.Models
         /// <remarks>
         /// A value of less than 0 means the ray is not hit
         /// </remarks>
-        public double IsHit(Ray ray)
+        public double RayToPointParameter(Ray ray, double min_t)
         {
             var discriminant = CalculateDiscriminant(ray);
 
@@ -87,7 +87,21 @@ namespace CSharpSimpleRayTracer.Models
                 return -1.0d;
             } else
             {
-                return (-discriminant.b - Math.Sqrt(discriminant.discriminant)) / 2*discriminant.a;
+                var current_t = (-discriminant.b + Math.Sqrt(discriminant.discriminant)) / 2*discriminant.a;
+
+                if(current_t < min_t)
+                {
+                    return current_t;
+                }
+
+                current_t = (-discriminant.b - Math.Sqrt(discriminant.discriminant)) / 2 * discriminant.a;
+
+                if(current_t < min_t)
+                {
+                    return current_t;
+                }
+
+                return -1d;
             }
         }
 

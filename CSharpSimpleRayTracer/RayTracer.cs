@@ -120,23 +120,31 @@ namespace CSharpSimpleRayTracer
             {
                 for (int i = 0; i < Width; i++)
                 {
-                    var u = (double)i / (double)Width;
-                    var v = (double)j / (double)Height;
 
-                    var currentPointX = Vec3.Add(lowerBound, dx.Scale(u));
-                    var currentPointY = Vec3.Add(currentPointX, dy.Scale(v));
+                    var uvCoords = GetUVCoordinatesFromXY(i, j);
+
+                    var currentPointX = Vec3.Add(lowerBound, dx.Scale(uvCoords.u));
+                    var currentPointY = Vec3.Add(currentPointX, dy.Scale(uvCoords.v));
                     var ray = new Ray(origin, currentPointY);
 
                     var colour = ColourSkyByRay(ray);
 
                     foreach (var obj in SceneObjects)
                     {
+                        // t is the distance value down the ray at the point
+                        // currently being drawn
+                        double min_t = double.MaxValue;
+
                         if (obj is Sphere)
                         {
                             var sphere = obj as Sphere;
-                            if (sphere.IsHit(ray) > 0)
+
+                            var current_t = sphere.RayToPointParameter(ray, min_t);
+
+                            if (current_t <= min_t && current_t > 0)
                             {
-                                colour = ColorFromVec3(sphere.DrawPixel(ray));
+                                min_t = current_t;
+                                colour = ColorFromVec3(sphere.DrawPixel(ray, current_t));
                             }
                         }
                     }
@@ -144,6 +152,14 @@ namespace CSharpSimpleRayTracer
                     FrameBuffer.SetPixel(Width - i - 1, Height - j - 1, colour);
                 }
             }
+        }
+
+        private (double u, double v) GetUVCoordinatesFromXY(int x, int y)
+        {
+            var u = (double)x / (double)Width;
+            var v = (double)y / (double)Height;
+
+            return (u, v);
         }
 
         /// <summary>

@@ -24,7 +24,7 @@ namespace Tests.ModelFixtures
 
             // Act
 
-            var result = sphere.IsHit(ray);
+            var result = sphere.RayToPointParameter(ray, double.MaxValue);
 
             // Assert
             Assert.That(result, Is.GreaterThanOrEqualTo(expectedResult));
