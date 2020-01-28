@@ -13,50 +13,25 @@ namespace CSharpSimpleRayTracer
     /// </summary>
     public class RayTracer
     {
-        /// <summary>
-        /// Width of the final image
-        /// </summary>
-        private int Width { get; }
 
-        /// <summary>
-        /// Height of the final image
-        /// </summary>
-        private int Height { get; }
-
-        /// <summary>
-        /// A bitmap frame buffer
-        /// </summary>
-        private Bitmap FrameBuffer { get; }
-
-        /// <summary>
-        /// All our pixel values are added one by one in a string builder
-        /// </summary>
-        private StringBuilder _imageBufferAsPPMString;
 
         /// <summary>
         /// A
         /// </summary>
         public IList<I3dObject> SceneObjects { get; set; }
 
+        /// <summary>
+        /// The frame to render to
+        /// </summary>
+        public FrameModel Frame { get; }
+
         public RayTracer(int x, int y)
         {
-            _imageBufferAsPPMString = new StringBuilder();
 
-            // set pixel type
-            _imageBufferAsPPMString.AppendLine("P3");
-
-            // set dimensions
-            _imageBufferAsPPMString.AppendLine($"{x} {y}");
-            Width = x;
-            Height = y;
-
-            // set the maximum value
-            _imageBufferAsPPMString.AppendLine("255");
+            Frame = new FrameModel(x, y);
 
             // initialise the scene with objects
             SceneObjects = new List<I3dObject>();
-
-            FrameBuffer = new Bitmap(x, y);
         }
 
 
@@ -66,98 +41,77 @@ namespace CSharpSimpleRayTracer
         }
 
         /// <summary>
-        /// Adds a string representation of a pixel to the frame buffer
+        /// Renders the scene by calculating the colour at each pixel
         /// </summary>
-        /// <param name="pixel"></param>
-        [Obsolete("For the time being I will try saving to a frame buffer")]
-        public void AddToImageBuffer(string pixel)
+        public void RenderScene()
         {
-            _imageBufferAsPPMString.AppendLine(pixel);
-        }
-
-        /// <summary>
-        /// This method converts the string frame buffer to a PNG file
-        /// and saves the output to disk
-        /// </summary>
-        /// <param name="name">The file name</param>
-        public void SaveImageFromPPM(string name) {
-
-            MagickImage image;
-
-            using (var stream = new MemoryStream())
+            for (int j = Frame.Height - 1; j >= 0; j--)
             {
-                var writer = new StreamWriter(stream);
-                writer.Write(_imageBufferAsPPMString);
-                writer.Flush();
-                stream.Position = 0;
-
-                image = new MagickImage(stream);
-            }
-
-            image.Write(name);
-        }
-
-        /// <summary>
-        /// Saves the frame buffer as an image to disk
-        /// </summary>
-        /// <param name="filename"></param>
-        public void SaveFrameBufferToDisk(string path)
-        {
-            FrameBuffer.Save(path, System.Drawing.Imaging.ImageFormat.Png);
-        }
-
-        /// <summary>
-        /// Fills the background with a sky like pattern
-        /// </summary>
-        public void DrawBackground()
-        {
-            var lowerBound = new Vec3(-2, -1, -1);
-            var dx = new Vec3(4, 0, 0);
-            var dy = new Vec3(0, 2, 0);
-            var origin = new Vec3(0, 0, 0);
-
-            for (int j = Height - 1; j >= 0; j--)
-            {
-                for (int i = 0; i < Width; i++)
+                for (int i = 0; i < Frame.Width; i++)
                 {
+                    var colour = RenderPixel(i, j);
 
-                    var uvCoords = GetUVCoordinatesFromXY(i, j);
-
-                    var currentPointX = Vec3.Add(lowerBound, dx.Scale(uvCoords.u));
-                    var currentPointY = Vec3.Add(currentPointX, dy.Scale(uvCoords.v));
-                    var ray = new Ray(origin, currentPointY);
-
-                    var colour = ColourSkyByRay(ray);
-
-                    foreach (var obj in SceneObjects)
-                    {
-                        // t is the distance value down the ray at the point
-                        // currently being drawn
-                        double min_t = double.MaxValue;
-
-                        if (obj is Sphere)
-                        {
-                            var sphere = obj as Sphere;
-
-                            var current_t = sphere.RayToPointParameter(ray, min_t);
-
-                            if (current_t <= min_t && current_t > 0)
-                            {
-                                min_t = current_t;
-                                colour = ColorFromVec3(sphere.DrawPixel(ray, current_t));
-                            }
-                        }
-                    }
-
-                    FrameBuffer.SetPixel(Width - i - 1, Height - j - 1, colour);
+                    Frame.FrameBuffer.SetPixel(Frame.Width - i - 1, Frame.Height - j - 1, colour);
                 }
             }
         }
 
+        /// <summary>
+        /// Calculates the colour of the pixel
+        /// </summary>
+        /// <param name="x">The x coordinate</param>
+        /// <param name="y">The y coordinate</param>
+        /// <returns>A colour or the pixel</returns>
+        public Color RenderPixel(int x, int y)
+        {
+            var ray = GetRayToPixel(x, y);
+
+            // first draw the background in case the ray does not hit anything
+            var colour = ColourSkyByRay(ray);
+
+            foreach (var obj in SceneObjects)
+            {
+                // t is the distance value down the ray at the point
+                // currently being drawn
+                double min_t = double.MaxValue;
+
+                if (obj is Sphere)
+                {
+                    var sphere = obj as Sphere;
+
+                    var current_t = sphere.RayToPointParameter(ray, min_t);
+
+                    if (current_t <= min_t && current_t > 0)
+                    {
+                        min_t = current_t;
+                        colour = ColorFromVec3(sphere.DrawPixel(ray, current_t));
+                    }
+                }
+            }
+
+            return colour;
+        }
+
+        /// <summary>
+        /// Calculates the ray to a given pixel location on the frame
+        /// </summary>
+        /// <param name="x">The x coordinate</param>
+        /// <param name="y">The y coordinate</param>
+        /// <returns>A ray from the origin that points to the XY coordinate</returns>
+        private Ray GetRayToPixel(int x, int y)
+        {
+            var origin = new Vec3(0, 0, 0);
+            var uvCoords = GetUVCoordinatesFromXY(x, y);
+
+            var currentPointX = Vec3.Add(Frame.LowerBound, Frame.dx.Scale(uvCoords.u));
+            var currentPointY = Vec3.Add(currentPointX, Frame.dy.Scale(uvCoords.v));
+            return new Ray(origin, currentPointY);
+        }
+
         private (double u, double v) GetUVCoordinatesFromXY(int x, int y)
         {
-            var u = (double)x / (double)Width;
-            var v = (double)y / (double)Height;
+            var u = (double)x / (double)Frame.Width;
+            var v = (double)y / (double)Frame.Height;
 
             return (u, v);
         }

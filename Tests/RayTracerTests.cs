@@ -1,7 +1,5 @@
 using System;
 using System.IO;
-using System.Reflection;
-using System.Text;
 using CSharpSimpleRayTracer;
 using CSharpSimpleRayTracer.Models;
 using ImageMagick;
@@ -47,10 +45,10 @@ namespace Tests
 
             // Act
 
-            rayTracer.DrawBackground();
+            rayTracer.RenderScene();
 
             var fileName = "Can_Draw_Background.png";
-            rayTracer.SaveFrameBufferToDisk(TestContext.CurrentContext.WorkDirectory+"/"+fileName);
+            rayTracer.Frame.SaveFrameBufferToDisk(TestContext.CurrentContext.WorkDirectory+"/"+fileName);
 
             // Assert
             Assert.That(VerifyImage(fileName), Is.True);
@@ -67,9 +65,9 @@ namespace Tests
             rayTracer.SceneObjects.Add(sphere);
 
             // Act
-            rayTracer.DrawBackground();            
+            rayTracer.RenderScene();            
             var fileName = $"{TestContext.CurrentContext.Test.MethodName}.png";
-            rayTracer.SaveFrameBufferToDisk(TestContext.CurrentContext.WorkDirectory + "/" + fileName);
+            rayTracer.Frame.SaveFrameBufferToDisk(TestContext.CurrentContext.WorkDirectory + "/" + fileName);
 
             // Assert
             Assert.That(VerifyImage(fileName), Is.True);
@@ -89,9 +87,9 @@ namespace Tests
             rayTracer.SceneObjects.Add(sphere2);
 
             // Act
-            rayTracer.DrawBackground();
+            rayTracer.RenderScene();
             var fileName = $"{TestContext.CurrentContext.Test.MethodName}.png";
-            rayTracer.SaveFrameBufferToDisk(TestContext.CurrentContext.WorkDirectory + "/" + fileName);
+            rayTracer.Frame.SaveFrameBufferToDisk(TestContext.CurrentContext.WorkDirectory + "/" + fileName);
 
             // Assert
             Assert.That(VerifyImage(fileName), Is.True);
