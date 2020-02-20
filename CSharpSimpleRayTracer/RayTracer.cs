@@ -103,8 +103,8 @@ namespace CSharpSimpleRayTracer
             var origin = new Vec3(0, 0, 0);
             var uvCoords = GetUVCoordinatesFromXY(x, y);
 
-            var currentPointX = Vec3.Add(Frame.LowerBound, Frame.dx.Scale(uvCoords.u));
-            var currentPointY = Vec3.Add(currentPointX, Frame.dy.Scale(uvCoords.v));
+            var currentPointX = Frame.LowerBound + Frame.dx.Scale(uvCoords.u);
+            var currentPointY = currentPointX + Frame.dy.Scale(uvCoords.v);
             return new Ray(origin, currentPointY);
         }
 
@@ -128,7 +128,7 @@ namespace CSharpSimpleRayTracer
 
             var scaledRay = new Vec3(1, 1, 1).Scale(1 - t);
 
-            var sky = Vec3.Add(scaledRay, new Vec3(0.5, 0.7, 1.0).Scale(t));
+            var sky = scaledRay + new Vec3(0.5, 0.7, 1.0).Scale(t);
 
             return ColorFromVec3(sky);
         }

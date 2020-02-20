@@ -1,7 +1,7 @@
 ﻿using System;
 namespace CSharpSimpleRayTracer.Models
 {
-    public class Vec3 
+    public class Vec3
     {
         public double X { get; set; }
         public double Y { get; set; }
@@ -83,7 +83,7 @@ namespace CSharpSimpleRayTracer.Models
         {
             var m = this.Length();
 
-            if(m > 0f)
+            if (m > 0f)
             {
                 X = X / m;
                 Y = Y / m;
@@ -105,14 +105,12 @@ namespace CSharpSimpleRayTracer.Models
         /// <summary>
         /// Adds 2 vectors and returns the result
         /// </summary>
-        public static Vec3 Add(Vec3 a, Vec3 b)
-        {
-            var x = a.X + b.X;
-            var y = a.Y + b.Y;
-            var z = a.Z + b.Z;
-
-            return new Vec3(x, y, z);
-        }
+        public static Vec3 operator +(Vec3 left, Vec3 right) =>
+            new Vec3 (
+                left.X +right.X,
+                left.Y + right.Y,
+                left.Z + right.Z);
+        
 
         /// <summary>
         /// Gets the cross produce of 2 vectors
