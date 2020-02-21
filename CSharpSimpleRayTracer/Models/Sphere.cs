@@ -57,7 +57,7 @@ namespace CSharpSimpleRayTracer.Models
 
             var pointAtParameter = op.PointAtParameter(t);
 
-            var N = Vec3.Subtract(pointAtParameter, Origin);
+            var N = pointAtParameter - Origin;
 
             N.Normalise();
 
@@ -111,7 +111,7 @@ namespace CSharpSimpleRayTracer.Models
         /// <param name="ray">The input ray</param>
         private (double a, double b, double discriminant) CalculateDiscriminant(Ray ray)
         {
-            var oc = Vec3.Subtract(ray.Origin(), Origin);
+            var oc = ray.Origin() - Origin;
             var a = Vec3.Dot(ray.Direction(), ray.Direction());
             var b = 2.0d * Vec3.Dot(oc, ray.Direction());
             var c = Vec3.Dot(oc, oc) - RSquared;

@@ -112,7 +112,7 @@ namespace Tests.ModelFixtures
             var v2 = new Vec3(4, 5, 6);
 
             // Act
-            var result = Vec3.Subtract(v1, v2);
+            var result = v1 - v2;
 
             // Assert
             Assert.That(result.X, Is.EqualTo(-3), "X is wrong");

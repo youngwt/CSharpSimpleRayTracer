@@ -127,14 +127,12 @@ namespace CSharpSimpleRayTracer.Models
         /// <summary>
         /// Subtracts the other vector from the current one
         /// </summary>
-        /// <param name="other">The vector to subtract</param>
-        public static Vec3 Subtract(Vec3 a, Vec3 b)
+        public static Vec3 operator -(Vec3 left, Vec3 right)
         {
-            var x = a.X - b.X;
-            var y = a.Y - b.Y;
-            var z = a.Z - b.Z;
-
-            return new Vec3(x, y, z);
+            return new Vec3(
+                left.X - right.X,
+                left.Y - right.Y,
+                left.Z - right.Z);
         }
 
         /// <summary>
